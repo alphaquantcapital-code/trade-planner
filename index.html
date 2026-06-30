@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk & Target Calculator</title>
+    <title>Trade Planner | Momentum Swing Trading</title>
+    <!-- Import Sora Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --border-color: #30363d;
-            --text-main: #c9d1d9;
-            --text-muted: #8b949e;
-            --accent-blue: #58a6ff;
-            --accent-green: #2ea043;
-            --accent-red: #f85149;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --color-white: #FFFFFF;
+            --color-light-gray: #D4D4D4;
+            --color-gray: #B3B3B3;
+            --color-dark: #2B2B2B;
+            --font-family: 'Sora', sans-serif;
         }
 
         * {
@@ -24,10 +23,11 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--color-light-gray);
+            color: var(--color-dark);
             font-family: var(--font-family);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -37,11 +37,11 @@
         .container {
             width: 100%;
             max-width: 550px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background-color: var(--color-white);
+            border: 1px solid var(--color-gray);
             border-radius: 12px;
             padding: 32px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(43, 43, 43, 0.1);
         }
 
         header {
@@ -57,7 +57,8 @@
         }
 
         p.subtitle {
-            color: var(--text-muted);
+            color: var(--color-dark);
+            opacity: 0.7;
             font-size: 14px;
         }
 
@@ -68,33 +69,38 @@
         label {
             display: block;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 8px;
-            color: var(--text-muted);
+            color: var(--color-dark);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         input {
             width: 100%;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
+            background-color: var(--color-white);
+            border: 1px solid var(--color-gray);
             border-radius: 6px;
             padding: 12px 16px;
-            color: var(--text-main);
+            color: var(--color-dark);
             font-size: 16px;
+            font-family: var(--font-family);
             transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input::placeholder {
+            color: var(--color-gray);
         }
 
         input:focus {
             outline: none;
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+            border-color: var(--color-dark);
+            box-shadow: 0 0 0 3px rgba(43, 43, 43, 0.1);
         }
 
         hr {
             border: 0;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--color-light-gray);
             margin: 28px 0;
         }
 
@@ -106,22 +112,32 @@
         }
 
         .result-card {
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
+            background-color: var(--color-white);
+            border: 1px solid var(--color-light-gray);
             border-radius: 8px;
             padding: 16px;
         }
 
         .result-card.highlight {
             grid-column: span 2;
-            background-color: rgba(88, 166, 255, 0.05);
-            border-color: rgba(88, 166, 255, 0.3);
+            background-color: var(--color-dark);
+            border-color: var(--color-dark);
+            color: var(--color-white);
         }
 
         .result-label {
             font-size: 12px;
-            color: var(--text-muted);
             margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .result-card:not(.highlight) .result-label {
+            color: var(--color-dark);
+            opacity: 0.7;
+        }
+
+        .result-card.highlight .result-label {
+            color: var(--color-light-gray);
         }
 
         .result-value {
@@ -130,7 +146,6 @@
         }
 
         .result-card.highlight .result-value {
-            color: var(--accent-blue);
             font-size: 24px;
         }
 
@@ -145,8 +160,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 16px;
-            background-color: rgba(46, 160, 67, 0.03);
-            border: 1px solid rgba(46, 160, 67, 0.15);
+            background-color: var(--color-white);
+            border: 1px solid var(--color-gray);
             border-radius: 8px;
         }
 
@@ -158,12 +173,13 @@
         .target-name {
             font-size: 14px;
             font-weight: 600;
-            color: var(--accent-green);
+            color: var(--color-dark);
         }
 
         .target-rr {
             font-size: 11px;
-            color: var(--text-muted);
+            color: var(--color-dark);
+            opacity: 0.7;
         }
 
         .target-vals {
@@ -173,19 +189,34 @@
         .target-price {
             font-size: 16px;
             font-weight: 600;
+            color: var(--color-dark);
         }
 
         .target-qty {
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--color-dark);
+            opacity: 0.7;
+            font-weight: 500;
         }
 
         .error-message {
-            color: var(--accent-red);
+            color: var(--color-dark);
+            background-color: var(--color-light-gray);
+            padding: 10px;
+            border-radius: 6px;
             font-size: 13px;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 20px;
+            font-weight: 500;
             display: none;
+        }
+
+        footer {
+            margin-top: 24px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-dark);
+            text-align: center;
         }
     </style>
 </head>
@@ -194,10 +225,11 @@
 <div class="container">
     <header>
         <h1>Trade Planner</h1>
-        <p class="subtitle">Calculate position sizing and target distributions</p>
+        <p class="subtitle">Position Sizing & Target Distribution</p>
     </header>
 
     <main>
+        <!-- Inputs -->
         <div class="input-group">
             <label for="signalHigh">Signal Candle High</label>
             <input type="number" id="signalHigh" placeholder="0.00" step="any">
@@ -215,6 +247,7 @@
 
         <hr>
 
+        <!-- Core Metrics -->
         <div class="results-section">
             <div class="result-card">
                 <div class="result-label">Buy Price (+0.3%)</div>
@@ -222,7 +255,7 @@
             </div>
             <div class="result-card">
                 <div class="result-label">Stop Loss (-0.5%)</div>
-                <div class="result-value" id="stopLoss" style="color: var(--accent-red);">—</div>
+                <div class="result-value" id="stopLoss">—</div>
             </div>
             <div class="result-card highlight">
                 <div class="result-label">Total Quantity to Buy</div>
@@ -230,47 +263,55 @@
             </div>
         </div>
 
+        <!-- Targets Execution -->
         <label>Target Breakdown</label>
         <div class="targets-space">
+            <!-- Target 1 -->
             <div class="target-row">
                 <div class="target-info">
                     <span class="target-name">Target 1</span>
-                    <span class="target-rr">1:1 Risk Reward</span>
+                    <span class="target-rr">1:1 Risk/Reward</span>
                 </div>
                 <div class="target-vals">
                     <div class="target-price" id="t1Price">—</div>
-                    <div class="target-qty" id="t1Qty">Sell 30%: —</div>
+                    <div class="target-qty" id="t1Qty">Sell 35%: —</div>
                 </div>
             </div>
 
+            <!-- Target 2 -->
             <div class="target-row">
                 <div class="target-info">
                     <span class="target-name">Target 2</span>
-                    <span class="target-rr">1:2 Risk Reward</span>
+                    <span class="target-rr">1:2 Risk/Reward</span>
                 </div>
                 <div class="target-vals">
                     <div class="target-price" id="t2Price">—</div>
-                    <div class="target-qty" id="t2Qty">Sell 28%: —</div>
+                    <div class="target-qty" id="t2Qty">Sell 35%: —</div>
                 </div>
             </div>
 
+            <!-- Target 3 -->
             <div class="target-row">
                 <div class="target-info">
                     <span class="target-name">Target 3</span>
-                    <span class="target-rr">1:4 Risk Reward</span>
+                    <span class="target-rr">1:4 Risk/Reward</span>
                 </div>
                 <div class="target-vals">
                     <div class="target-price" id="t3Price">—</div>
-                    <div class="target-qty" id="t3Qty">Sell 22%: —</div>
+                    <div class="target-qty" id="t3Qty">Sell 30%: —</div>
                 </div>
             </div>
         </div>
 
         <div class="error-message" id="errorMessage">
-            Invalid setups (e.g., Stop Loss higher than Buy Price) will not calculate.
+            Invalid setup: Stop Loss must be lower than Buy Price.
         </div>
     </main>
 </div>
+
+<footer>
+    Made for Momentum Swing Trading ❤️
+</footer>
 
 <script>
     const signalHighInput = document.getElementById('signalHigh');
@@ -315,30 +356,32 @@
         }
 
         const totalQty = risk / riskPerShare;
+        const totalQtyInt = Math.floor(totalQty);
 
         // Target Calculations (Buy Price + (Multiplier * Risk Per Share))
         const t1Price = buyPrice + (1 * riskPerShare);
         const t2Price = buyPrice + (2 * riskPerShare);
         const t3Price = buyPrice + (4 * riskPerShare);
 
-        // Allocation Quantities (Floored to avoid fractional issues in standard retail trading)
-        const t1Qty = Math.floor(totalQty * 0.30);
-        const t2Qty = Math.floor(totalQty * 0.28);
-        const t3Qty = Math.floor(totalQty * 0.22);
+        // Updated Allocation Quantities (35%, 35%, 30%)
+        const t1Qty = Math.floor(totalQtyInt * 0.35);
+        const t2Qty = Math.floor(totalQtyInt * 0.35);
+        // Ensure the 3rd target catches any remaining shares perfectly without fractional drops
+        const t3Qty = totalQtyInt - (t1Qty + t2Qty); 
 
         // Render to UI
         buyPriceEl.innerText = '₹' + buyPrice.toFixed(2);
         stopLossEl.innerText = '₹' + stopLoss.toFixed(2);
-        totalQtyEl.innerText = Math.floor(totalQty) + ` (${totalQty.toFixed(1)})`;
+        totalQtyEl.innerText = totalQtyInt + ` (${totalQty.toFixed(1)})`;
 
         t1PriceEl.innerText = '₹' + t1Price.toFixed(2);
-        t1QtyEl.innerText = `Sell 30%: ${t1Qty} units`;
+        t1QtyEl.innerText = `Sell 35%: ${t1Qty} units`;
 
         t2PriceEl.innerText = '₹' + t2Price.toFixed(2);
-        t2QtyEl.innerText = `Sell 28%: ${t2Qty} units`;
+        t2QtyEl.innerText = `Sell 35%: ${t2Qty} units`;
 
         t3PriceEl.innerText = '₹' + t3Price.toFixed(2);
-        t3QtyEl.innerText = `Sell 22%: ${t3Qty} units`;
+        t3QtyEl.innerText = `Sell 30%: ${t3Qty} units`;
     }
 
     function resetFields() {
@@ -346,11 +389,11 @@
         stopLossEl.innerText = '—';
         totalQtyEl.innerText = '—';
         t1PriceEl.innerText = '—';
-        t1QtyEl.innerText = 'Sell 30%: —';
+        t1QtyEl.innerText = 'Sell 35%: —';
         t2PriceEl.innerText = '—';
-        t2QtyEl.innerText = 'Sell 28%: —';
+        t2QtyEl.innerText = 'Sell 35%: —';
         t3PriceEl.innerText = '—';
-        t3QtyEl.innerText = 'Sell 22%: —';
+        t3QtyEl.innerText = 'Sell 30%: —';
     }
 
     // Live-updating event listeners

@@ -9,11 +9,12 @@
     
     <style>
         :root {
-            --color-white: #FFFFFF;
-            --color-light-gray: #D4D4D4;
-            --color-gray: #B3B3B3;
-            --color-dark: #2B2B2B;
-            --font-family: 'Sora', sans-serif;
+            --color-white		: #FFFFFF;
+            --color-light-gray	: #D4D4D4;
+            --color-gray		: #B3B3B3;
+            --color-dark		: #2B2B2B;
+			--color-green		: #006D2C;
+            --font-family		: 'Sora', sans-serif;
         }
 
         * {
@@ -23,7 +24,7 @@
         }
 
         body {
-            background-color: var(--color-light-gray);
+            background-color: var(--color-dark);
             color: var(--color-dark);
             font-family: var(--font-family);
             display: flex;
@@ -215,7 +216,7 @@
             margin-top: 24px;
             font-size: 13px;
             font-weight: 500;
-            color: var(--color-dark);
+            color: var(--color-white);
             text-align: center;
         }
     </style>
@@ -257,6 +258,16 @@
                 <div class="result-label">Stop Loss (-0.5%)</div>
                 <div class="result-value" id="stopLoss">—</div>
             </div>
+            <!-- New Features -->
+            <div class="result-card">
+                <div class="result-label">Stop Loss %</div>
+                <div class="result-value" id="slPercent">—</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Capital Required</div>
+                <div class="result-value" id="amountInvested">—</div>
+            </div>
+            
             <div class="result-card highlight">
                 <div class="result-label">Total Quantity to Buy</div>
                 <div class="result-value" id="totalQty">—</div>
@@ -310,7 +321,7 @@
 </div>
 
 <footer>
-    Made for Momentum Swing Trading ❤️
+    Made for Momentum Swing Trading 🚀
 </footer>
 
 <script>
@@ -320,6 +331,8 @@
 
     const buyPriceEl = document.getElementById('buyPrice');
     const stopLossEl = document.getElementById('stopLoss');
+    const slPercentEl = document.getElementById('slPercent');
+    const amountInvestedEl = document.getElementById('amountInvested');
     const totalQtyEl = document.getElementById('totalQty');
 
     const t1PriceEl = document.getElementById('t1Price');
@@ -357,6 +370,10 @@
 
         const totalQty = risk / riskPerShare;
         const totalQtyInt = Math.floor(totalQty);
+        
+        // New Metric Calculations
+        const slPercent = (riskPerShare / buyPrice) * 100;
+        const amountInvested = totalQtyInt * buyPrice; // Using integer qty for actual required capital
 
         // Target Calculations (Buy Price + (Multiplier * Risk Per Share))
         const t1Price = buyPrice + (1 * riskPerShare);
@@ -369,11 +386,14 @@
         // Ensure the 3rd target catches any remaining shares perfectly without fractional drops
         const t3Qty = totalQtyInt - (t1Qty + t2Qty); 
 
-        // Render to UI
+        // Render Core Metrics to UI
         buyPriceEl.innerText = '₹' + buyPrice.toFixed(2);
         stopLossEl.innerText = '₹' + stopLoss.toFixed(2);
+        slPercentEl.innerText = slPercent.toFixed(2) + '%';
+        amountInvestedEl.innerText = '₹' + amountInvested.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         totalQtyEl.innerText = totalQtyInt + ` (${totalQty.toFixed(1)})`;
 
+        // Render Targets
         t1PriceEl.innerText = '₹' + t1Price.toFixed(2);
         t1QtyEl.innerText = `Sell 35%: ${t1Qty} units`;
 
@@ -387,6 +407,8 @@
     function resetFields() {
         buyPriceEl.innerText = '—';
         stopLossEl.innerText = '—';
+        slPercentEl.innerText = '—';
+        amountInvestedEl.innerText = '—';
         totalQtyEl.innerText = '—';
         t1PriceEl.innerText = '—';
         t1QtyEl.innerText = 'Sell 35%: —';

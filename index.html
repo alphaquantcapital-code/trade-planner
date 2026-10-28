@@ -285,7 +285,7 @@
                 </div>
                 <div class="target-vals">
                     <div class="target-price" id="t1Price">—</div>
-                    <div class="target-qty" id="t1Qty">Sell 35%: —</div>
+                    <div class="target-qty" id="t1Qty">Sell 40%: —</div>
                 </div>
             </div>
 
@@ -297,7 +297,7 @@
                 </div>
                 <div class="target-vals">
                     <div class="target-price" id="t2Price">—</div>
-                    <div class="target-qty" id="t2Qty">Sell 35%: —</div>
+                    <div class="target-qty" id="t2Qty">Sell 30%: —</div>
                 </div>
             </div>
 
@@ -305,7 +305,7 @@
             <div class="target-row">
                 <div class="target-info">
                     <span class="target-name">Target 3</span>
-                    <span class="target-rr">1:4 Risk/Reward</span>
+                    <span class="target-rr">1:3 Risk/Reward</span>
                 </div>
                 <div class="target-vals">
                     <div class="target-price" id="t3Price">—</div>
@@ -349,7 +349,7 @@
         const risk = parseFloat(riskInput.value);
 
         // Reset display if values are missing or incomplete
-        if (isNaN(signalHigh) || !signalHigh || window.isNaN(swingLow) || !swingLow || isNaN(risk) || !risk) {
+        if (isNaN(signalHigh) || !signalHigh || isNaN(swingLow) || !swingLow || isNaN(risk) || !risk) {
             resetFields();
             return;
         }
@@ -378,11 +378,11 @@
         // Target Calculations (Buy Price + (Multiplier * Risk Per Share))
         const t1Price = buyPrice + (1 * riskPerShare);
         const t2Price = buyPrice + (2 * riskPerShare);
-        const t3Price = buyPrice + (4 * riskPerShare);
+        const t3Price = buyPrice + (3 * riskPerShare); // Changed from 4 to 3 for 1:3 RR
 
-        // Updated Allocation Quantities (35%, 35%, 30%)
-        const t1Qty = Math.floor(totalQtyInt * 0.35);
-        const t2Qty = Math.floor(totalQtyInt * 0.35);
+        // Updated Allocation Quantities (40%, 30%, 30%)
+        const t1Qty = Math.floor(totalQtyInt * 0.40);
+        const t2Qty = Math.floor(totalQtyInt * 0.30);
         // Ensure the 3rd target catches any remaining shares perfectly without fractional drops
         const t3Qty = totalQtyInt - (t1Qty + t2Qty); 
 
@@ -395,10 +395,10 @@
 
         // Render Targets
         t1PriceEl.innerText = '₹' + t1Price.toFixed(2);
-        t1QtyEl.innerText = `Sell 35%: ${t1Qty} units`;
+        t1QtyEl.innerText = `Sell 40%: ${t1Qty} units`;
 
         t2PriceEl.innerText = '₹' + t2Price.toFixed(2);
-        t2QtyEl.innerText = `Sell 35%: ${t2Qty} units`;
+        t2QtyEl.innerText = `Sell 30%: ${t2Qty} units`;
 
         t3PriceEl.innerText = '₹' + t3Price.toFixed(2);
         t3QtyEl.innerText = `Sell 30%: ${t3Qty} units`;
@@ -411,9 +411,9 @@
         amountInvestedEl.innerText = '—';
         totalQtyEl.innerText = '—';
         t1PriceEl.innerText = '—';
-        t1QtyEl.innerText = 'Sell 35%: —';
+        t1QtyEl.innerText = 'Sell 40%: —';
         t2PriceEl.innerText = '—';
-        t2QtyEl.innerText = 'Sell 35%: —';
+        t2QtyEl.innerText = 'Sell 30%: —';
         t3PriceEl.innerText = '—';
         t3QtyEl.innerText = 'Sell 30%: —';
     }
